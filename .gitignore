@@ -63,3 +63,5 @@ typings/
 .env.local
 
 .vercel
+
+react-app-env.d.ts
