@@ -1,16 +1,13 @@
+import React from 'react';
 import { NotionRenderer, BlockMapType } from 'react-notion';
-// import Head from "next/head";
-// import Link from "next/link";
+import Head from 'next/head';
+import Link from 'next/link';
 import fetch from 'node-fetch';
+import { Flex } from 'rebass/styled-components';
 
 export const getStaticProps = async () => {
-  const main = 'https://notion.ctbw.workers.dev/v1/page/08804191115447ce8532a9d67a5ee397';
-  const data = await fetch(main, {
-    method: 'get',
-    headers: {
-      Authorization: `Bearer 44d8782f3fcafa2f206a09b525535711f4ed3b50afbe6a4deb358f6333c8ef8e90a8bc485e0b94d93722e397a91add0163b3244bfff648579cad7da0e7e5fd604ade837de613ad4c1ee72f95d41b`,
-    },
-  }).then((res: any) => res.json());
+  const main = 'https://notion.ctbw.workers.dev/v1/table/640e552fa68b4433a43b5078b7e4099c';
+  const data = await fetch(main).then((res: any) => res.json());
 
   return {
     props: {
@@ -25,15 +22,23 @@ export interface IndexPropsType {
 }
 
 const Index = ({ blockMap }: IndexPropsType) => {
-  console.log('Block Map:', blockMap);
+  console.log('Table data:', blockMap);
 
-  // return (
-  //   <>
-  //     <NotionRenderer blockMap={blockMap} />
-  //   </>
-  // );
-
-  return <>hello world</>;
+  return (
+    <>
+      <Head>
+        <style>{`body { margin: 0;}`}</style>
+        <title>react-notion example</title>
+      </Head>
+      {blockMap.map((post: any) => {
+        return (
+          <Flex>
+            <Link href={`/${post.id}`}>{post.description}</Link>
+          </Flex>
+        );
+      })}
+    </>
+  );
 };
 
 export default Index;

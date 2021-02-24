@@ -12,7 +12,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'react-hooks', 'react'],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
+      tsx: true,
     },
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
