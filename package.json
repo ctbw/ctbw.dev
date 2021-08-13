@@ -5,7 +5,7 @@
   "dependencies": {
     "@types/node-fetch": "^2.5.8",
     "@types/rebass": "^4.0.7",
-    "next": "^10.0.6",
+    "next": "^11.1.0",
     "node-fetch": "^2.6.1",
     "notion-api-worker": "^0.1.0",
     "react": "^16.13.1",
