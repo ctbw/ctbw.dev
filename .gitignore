@@ -65,5 +65,3 @@ typings/
 .vercel
 
 react-app-env.d.ts
-
-.vscode

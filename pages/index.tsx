@@ -1,47 +1,9 @@
 import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import fetch from 'node-fetch';
-import { InferGetStaticPropsType } from 'next';
-import { Flex } from 'rebass/styled-components';
-export interface BlogPostType {
-  id: string;
-  description: string;
-  name: string;
-}
+import { NotionRenderer } from 'react-notion-x';
+import { NotionAPI } from 'notion-client';
 
-export const getStaticProps = async () => {
-  const main = 'https://notion.ctbw.workers.dev/v1/table/640e552fa68b4433a43b5078b7e4099c';
-  const data = await fetch(main).then((res: any) => res.json());
+const notion = new NotionAPI();
 
-  return {
-    props: {
-      blogPosts: data,
-    },
-    revalidate: 1,
-  };
-};
+const recordMap = await notion.getPage('08804191115447ce8532a9d67a5ee397');
 
-const Index = ({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log('Table data:', blogPosts);
-
-  return (
-    <>
-      <Head>
-        <style>{`body { margin: 0;}`}</style>
-        <title>ctbw.dev</title>
-      </Head>
-      <Flex flexDirection="column">
-        {blogPosts.map(({ id, description }: BlogPostType) => {
-          return (
-            <Link key={id} href={`/${id}`}>
-              {description}
-            </Link>
-          );
-        })}
-      </Flex>
-    </>
-  );
-};
-
-export default Index;
+export default () => <NotionRenderer recordMap={recordMap} fullPage={true} darkMode={false} />;

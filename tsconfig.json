@@ -4,10 +4,8 @@
     "baseUrl": ".",
     "jsx": "preserve"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "pages/*.tsx"
-  ]
+  "paths": {
+    "@/*": ["./src/*"]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

@@ -5,3 +5,5 @@
 **/.git/**
 **/public/**
 !.eslintrc.js
+.next
+node_modules
