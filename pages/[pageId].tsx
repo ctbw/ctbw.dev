@@ -9,7 +9,8 @@ const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 
 const notion = new NotionAPI();
 
-export const getStaticProps = async (context: any) => {
+export const getStaticProps = async (context) => {
+  console.log('Context: ', context);
   const pageId = context.params.pageId as string;
   const recordMap = await notion.getPage(pageId);
 
@@ -53,7 +54,7 @@ export async function getStaticPaths() {
   };
 }
 
-export default function NotionPage({ recordMap }: any) {
+export default function NotionPage({ recordMap }) {
   if (!recordMap) {
     return null;
   }
@@ -71,8 +72,8 @@ export default function NotionPage({ recordMap }: any) {
       <NotionRenderer
         recordMap={recordMap}
         fullPage={true}
-        darkMode={false}
-        rootDomain="localhost:3000" // used to detect root domain links and open this in the same tab
+        darkMode={true}
+        rootDomain="localhost:3000"
         components={{
           collection: Collection,
           collectionRow: CollectionRow,

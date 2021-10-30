@@ -1,11 +1,20 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "es2016",
+    "lib": ["dom", "esnext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "jsx": "preserve"
   },
-  "paths": {
-    "@/*": ["./src/*"]
-  },
+  "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
