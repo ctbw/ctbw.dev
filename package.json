@@ -1,6 +1,6 @@
 {
   "name": "ctbw.dev",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,6 +23,10 @@
     }
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.10",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "framer-motion": "^4",
     "next": "^10.0.6",
     "node-fetch": "^2.6.1",
     "notion-client": "^4.9.10",

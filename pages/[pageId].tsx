@@ -68,7 +68,7 @@ export default function NotionPage({ recordMap }) {
         <meta name="description" content="React Notion X demo renderer." />
         <title>{title}</title>
       </Head>
-
+      
       <NotionRenderer
         recordMap={recordMap}
         fullPage={true}
