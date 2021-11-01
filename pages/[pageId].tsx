@@ -9,6 +9,9 @@ const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 
 const notion = new NotionAPI();
 
+const rootNotionPageId = '08804191115447ce8532a9d67a5ee397';
+const rootNotionSpaceId = '08804191115447ce8532a9d67a5ee397';
+
 export const getStaticProps = async (context) => {
   console.log('Context: ', context);
   const pageId = context.params.pageId as string;
@@ -18,7 +21,8 @@ export const getStaticProps = async (context) => {
     props: {
       recordMap,
     },
-    revalidate: 10,
+    // revalidate cache every 5 minutes
+    revalidate: 300,
   };
 };
 
@@ -29,9 +33,6 @@ export async function getStaticPaths() {
       fallback: true,
     };
   }
-
-  const rootNotionPageId = '08804191115447ce8532a9d67a5ee397';
-  const rootNotionSpaceId = '08804191115447ce8532a9d67a5ee397';
 
   // This crawls all public pages starting from the given root page in order
   // for next.js to pre-generate all pages via static site generation (SSG).
@@ -61,6 +62,7 @@ export default function NotionPage({ recordMap }) {
 
   const title = getPageTitle(recordMap);
   console.log(title, recordMap);
+  console.log(recordMap.block['9a10aefd-8a82-4f29-922c-8f7e8b85113d'])
 
   return (
     <>
@@ -68,7 +70,7 @@ export default function NotionPage({ recordMap }) {
         <meta name="description" content="React Notion X demo renderer." />
         <title>{title}</title>
       </Head>
-      
+
       <NotionRenderer
         recordMap={recordMap}
         fullPage={true}
