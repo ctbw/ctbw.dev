@@ -62,7 +62,6 @@ export default function NotionPage({ recordMap }) {
 
   const title = getPageTitle(recordMap);
   console.log(title, recordMap);
-  console.log(recordMap.block['9a10aefd-8a82-4f29-922c-8f7e8b85113d'])
 
   return (
     <>

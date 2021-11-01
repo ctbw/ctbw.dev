@@ -11,6 +11,8 @@ export const getStaticProps = async (context) => {
     props: {
       recordMap,
     },
+    // revalidate cache every 5 minutes
+    revalidate: 300,
   };
 };
 
@@ -27,7 +29,3 @@ const Home = ({ recordMap }) => (
 );
 
 export default Home;
-
-// const UnderConstruction = () => <>Under Construction</>;
-
-// export default UnderConstruction;
