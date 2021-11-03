@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { getPageTitle, getAllPagesInSpace } from 'notion-utils';
+import * as notionUtils from 'notion-utils';
 import { NotionAPI } from 'notion-client';
 import { Collection, CollectionRow, NotionRenderer } from 'react-notion-x';
 
@@ -22,7 +22,7 @@ export const getStaticProps = async (context) => {
       recordMap,
     },
     // revalidate cache every 5 minutes
-    revalidate: 300,
+    revalidate: 10,
   };
 };
 
@@ -38,7 +38,7 @@ export async function getStaticPaths() {
   // for next.js to pre-generate all pages via static site generation (SSG).
   // This is a useful optimization but not necessary; you could just as easily
   // set paths to an empty array to not pre-generate any pages at build time.
-  const pages = await getAllPagesInSpace(
+  const pages = await notionUtils.getAllPagesInSpace(
     rootNotionPageId,
     rootNotionSpaceId,
     notion.getPage.bind(notion),
@@ -60,9 +60,8 @@ export default function NotionPage({ recordMap }) {
     return null;
   }
 
-  const title = getPageTitle(recordMap);
+  const title = notionUtils.getPageTitle(recordMap);
   console.log(title, recordMap);
-  console.log(recordMap.block['9a10aefd-8a82-4f29-922c-8f7e8b85113d'])
 
   return (
     <>
