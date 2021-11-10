@@ -1,6 +1,8 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { NotionAPI } from 'notion-client';
 import { NotionRenderer, Collection, CollectionRow } from 'react-notion-x';
+import { searchNotion } from 'lib/search-notion';
 
 const notion = new NotionAPI();
 
@@ -11,19 +13,25 @@ export const getStaticProps = async () => {
     props: {
       recordMap,
     },
-    // revalidate cache every 5 minutes
     revalidate: 10,
   };
 };
+
+const Modal = dynamic(() => import('react-notion-x').then((notion) => notion.Modal), {
+  ssr: false,
+});
 
 const Home = ({ recordMap }) => (
   <NotionRenderer
     recordMap={recordMap}
     fullPage={true}
     darkMode={true}
+    searchNotion={searchNotion}
+    rootDomain="localhost:3000"
     components={{
       collection: Collection,
       collectionRow: CollectionRow,
+      modal: Modal,
     }}
   />
 );
