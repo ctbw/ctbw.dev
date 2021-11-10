@@ -1,9 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
 import * as notionUtils from 'notion-utils';
 import { NotionAPI } from 'notion-client';
 import { Collection, CollectionRow, NotionRenderer } from 'react-notion-x';
+
+import { searchNotion } from 'lib/search-notion';
 
 const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 
@@ -21,7 +24,6 @@ export const getStaticProps = async (context) => {
     props: {
       recordMap,
     },
-    // revalidate cache every 5 minutes
     revalidate: 10,
   };
 };
@@ -55,6 +57,10 @@ export async function getStaticPaths() {
   };
 }
 
+const Modal = dynamic(() => import('react-notion-x').then((notion) => notion.Modal), {
+  ssr: false,
+});
+
 export default function NotionPage({ recordMap }) {
   if (!recordMap) {
     return null;
@@ -74,10 +80,12 @@ export default function NotionPage({ recordMap }) {
         recordMap={recordMap}
         fullPage={true}
         darkMode={true}
+        searchNotion={searchNotion}
         rootDomain="localhost:3000"
         components={{
           collection: Collection,
           collectionRow: CollectionRow,
+          modal: Modal,
         }}
       />
     </>
