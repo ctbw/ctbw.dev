@@ -1,7 +1,8 @@
 {
   "name": "ctbw.dev",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
+  "packageManager": "pnpm@8.15.3",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -36,7 +37,7 @@
     "notion-types": "^4.8.2",
     "notion-utils": "^4.8.6",
     "p-memoize": "^6.0.1",
-    "react": "^16.13.1",
+    "react": "^18.2.0",
     "react-dom": "^16.13.1",
     "react-notion-x": "^4.9.9",
     "react-scripts": "3.4.1",
@@ -44,6 +45,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@next/bundle-analyzer": "^11.1.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
