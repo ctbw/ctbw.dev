@@ -1,7 +1,7 @@
 # ctbw.dev
 
-## 0.2.3
+## 1.0.0
 
-### Patch Changes
+### Major Changes
 
-- added .nvmrc, switch from yarn to pnpm, update packages
+- Forked project template from travis fischer. Gets blog up and running.

@@ -1,93 +1,54 @@
-import React from 'react';
-import Head from 'next/head';
-import dynamic from 'next/dynamic';
+import * as React from 'react'
+import { GetStaticProps } from 'next'
 
-import * as notionUtils from 'notion-utils';
-import { NotionAPI } from 'notion-client';
-import { Collection, CollectionRow, NotionRenderer } from 'react-notion-x';
+import { NotionPage } from '@/components/NotionPage'
+import { domain, isDev } from '@/lib/config'
+import { getSiteMap } from '@/lib/get-site-map'
+import { resolveNotionPage } from '@/lib/resolve-notion-page'
+import { PageProps, Params } from '@/lib/types'
 
-import { searchNotion } from 'lib/search-notion';
+export const getStaticProps: GetStaticProps<PageProps, Params> = async (
+  context
+) => {
+  const rawPageId = context.params.pageId as string
 
-const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
+  try {
+    const props = await resolveNotionPage(domain, rawPageId)
 
-const notion = new NotionAPI();
+    return { props, revalidate: 10 }
+  } catch (err) {
+    console.error('page error', domain, rawPageId, err)
 
-const rootNotionPageId = '08804191115447ce8532a9d67a5ee397';
-const rootNotionSpaceId = '08804191115447ce8532a9d67a5ee397';
-
-export const getStaticProps = async (context) => {
-  console.log('Context: ', context);
-  const pageId = context.params.pageId as string;
-  const recordMap = await notion.getPage(pageId);
-
-  return {
-    props: {
-      recordMap,
-    },
-    revalidate: 10,
-  };
-};
+    // we don't want to publish the error version of this page, so
+    // let next.js know explicitly that incremental SSG failed
+    throw err
+  }
+}
 
 export async function getStaticPaths() {
   if (isDev) {
     return {
       paths: [],
-      fallback: true,
-    };
+      fallback: true
+    }
   }
 
-  // This crawls all public pages starting from the given root page in order
-  // for next.js to pre-generate all pages via static site generation (SSG).
-  // This is a useful optimization but not necessary; you could just as easily
-  // set paths to an empty array to not pre-generate any pages at build time.
-  const pages = await notionUtils.getAllPagesInSpace(
-    rootNotionPageId,
-    rootNotionSpaceId,
-    notion.getPage.bind(notion),
-    {
-      traverseCollections: false,
-    }
-  );
+  const siteMap = await getSiteMap()
 
-  const paths = Object.keys(pages).map((pageId) => `/${pageId}`);
+  const staticPaths = {
+    paths: Object.keys(siteMap.canonicalPageMap).map((pageId) => ({
+      params: {
+        pageId
+      }
+    })),
+    // paths: [],
+    fallback: true
+  }
 
-  return {
-    paths,
-    fallback: true,
-  };
+  console.log(staticPaths.paths)
+  return staticPaths
 }
 
-const Modal = dynamic(() => import('react-notion-x').then((notion) => notion.Modal), {
-  ssr: false,
-});
-
-export default function NotionPage({ recordMap }) {
-  if (!recordMap) {
-    return null;
-  }
-
-  const title = notionUtils.getPageTitle(recordMap);
-  console.log(title, recordMap);
-
-  return (
-    <>
-      <Head>
-        <meta name="description" content="React Notion X demo renderer." />
-        <title>{title}</title>
-      </Head>
-
-      <NotionRenderer
-        recordMap={recordMap}
-        fullPage={true}
-        darkMode={true}
-        searchNotion={searchNotion}
-        rootDomain="localhost:3000"
-        components={{
-          collection: Collection,
-          collectionRow: CollectionRow,
-          modal: Modal,
-        }}
-      />
-    </>
-  );
+export default function NotionDomainDynamicPage(props) {
+  return <NotionPage {...props} />
 }
