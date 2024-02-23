@@ -1,37 +1,41 @@
-import fetch from 'isomorphic-unfetch';
-import pMemoize from 'p-memoize';
+// import ky from 'ky'
+import ExpiryMap from 'expiry-map'
+import fetch from 'isomorphic-unfetch'
+import pMemoize from 'p-memoize'
 
-import { SearchParams, SearchResults } from '../types';
+import * as types from './types'
+import { api } from './config'
 
-export const searchNotion = pMemoize(searchNotionImpl);
+export const searchNotion = pMemoize(searchNotionImpl, {
+  cacheKey: (args) => args[0]?.query,
+  cache: new ExpiryMap(10000)
+})
 
-export const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
-export const host = isDev ? `http://localhost:3000` : `https://ctbw.dev`;
-
-export const apiBaseUrl = `${host}/api`;
-
-export const api = {
-  createPreviewImage: `${apiBaseUrl}/create-preview-image`,
-  searchNotion: `${apiBaseUrl}/search-notion`,
-};
-
-async function searchNotionImpl(params: SearchParams): Promise<SearchResults> {
+async function searchNotionImpl(
+  params: types.SearchParams
+): Promise<types.SearchResults> {
   return fetch(api.searchNotion, {
     method: 'POST',
     body: JSON.stringify(params),
     headers: {
-      'content-type': 'application/json',
-    },
+      'content-type': 'application/json'
+    }
   })
     .then((res) => {
-      console.log(res);
       if (res.ok) {
-        return res;
+        return res
       }
 
-      const error: any = new Error(res.statusText);
-      error.response = res;
-      return Promise.reject(error);
+      // convert non-2xx HTTP responses into errors
+      const error: any = new Error(res.statusText)
+      error.response = res
+      return Promise.reject(error)
     })
-    .then((res) => res.json());
+    .then((res) => res.json())
+
+  // return ky
+  //   .post(api.searchNotion, {
+  //     json: params
+  //   })
+  //   .json()
 }

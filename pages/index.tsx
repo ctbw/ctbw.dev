@@ -1,39 +1,23 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { NotionAPI } from 'notion-client';
-import { NotionRenderer, Collection, CollectionRow } from 'react-notion-x';
-import { searchNotion } from 'lib/search-notion';
+import * as React from 'react'
 
-const notion = new NotionAPI();
+import { NotionPage } from '@/components/NotionPage'
+import { domain } from '@/lib/config'
+import { resolveNotionPage } from '@/lib/resolve-notion-page'
 
 export const getStaticProps = async () => {
-  const recordMap = await notion.getPage('08804191115447ce8532a9d67a5ee397');
+  try {
+    const props = await resolveNotionPage(domain)
 
-  return {
-    props: {
-      recordMap,
-    },
-    revalidate: 10,
-  };
-};
+    return { props, revalidate: 10 }
+  } catch (err) {
+    console.error('page error', domain, err)
 
-const Modal = dynamic(() => import('react-notion-x').then((notion) => notion.Modal), {
-  ssr: false,
-});
+    // we don't want to publish the error version of this page, so
+    // let next.js know explicitly that incremental SSG failed
+    throw err
+  }
+}
 
-const Home = ({ recordMap }) => (
-  <NotionRenderer
-    recordMap={recordMap}
-    fullPage={true}
-    darkMode={true}
-    searchNotion={searchNotion}
-    rootDomain="localhost:3000"
-    components={{
-      collection: Collection,
-      collectionRow: CollectionRow,
-      modal: Modal,
-    }}
-  />
-);
-
-export default Home;
+export default function NotionDomainPage(props) {
+  return <NotionPage {...props} />
+}
