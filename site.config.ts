@@ -18,7 +18,7 @@ export default siteConfig({
 
   // social usernames (optional)
   github: 'ctbwx',
-  linkedin: 'charliewilhite',
+  linkedin: 'ctbwx',
   // mastodon: '#', // optional mastodon profile URL, provides link verification
   // newsletter: '#', // optional newsletter URL
   // youtube: '#', // optional youtube channel name or `channel/UCGbXXXXXXXXXXXXXXXXXXXXXX`
