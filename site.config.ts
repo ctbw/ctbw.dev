@@ -51,5 +51,10 @@ export default siteConfig({
   // important pages. To use `navigationLinks`, set `navigationStyle` to `custom`.
   // navigationStyle: 'default'
   navigationStyle: 'custom',
-  navigationLinks: []
+  navigationLinks: [
+    {
+      title: 'Subscribe',
+      pageId: 'f55931fc01134c97a32ca4f0104f6cf0'
+    }
+  ]
 })
