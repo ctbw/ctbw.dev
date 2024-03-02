@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Document, { Head, Html, Main, NextScript } from 'next/document'
-import Script from 'next/script'
 
 import { IconContext } from '@react-icons/all-files'
 
@@ -77,7 +76,7 @@ export default class MyDocument extends Document {
               }}
             />
             <Main />
-            {/* <Script src='https://chimpstatic.com/mcjs-connected/js/users/b54d459eba797b47a6f48e4a4/5b20a99202f7d45b1bee288c2.js' /> */}
+
             <NextScript />
           </body>
         </Html>
